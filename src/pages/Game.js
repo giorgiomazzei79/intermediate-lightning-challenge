@@ -30,6 +30,15 @@ class Game extends Lightning.Component {
     };
   }
 
+  _active() {
+    this.startGame();
+  }
+
+  _inactive(){
+    this.endGame();
+  }
+
+
   cellSize = 100;
   tailItemPadding = 10;
   itemSize = 80;
