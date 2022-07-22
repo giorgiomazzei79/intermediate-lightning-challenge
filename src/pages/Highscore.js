@@ -1,4 +1,4 @@
-import { Lightning, Colors } from "@lightningjs/sdk";
+import { Lightning, Colors, Router } from "@lightningjs/sdk";
 import Button from "../components/Button";
 import fontStyles from "../lib/fontStyles";
 import styles from "../lib/styles";
@@ -55,6 +55,9 @@ class Highscore extends Lightning.Component {
         PlayAgain: {
           type: Button,
           title: "Play Again",
+          signals: {
+            _buttonPressed: "_buttonPressedHandler",
+          },
         },
 
         GoBackHome: {
@@ -63,6 +66,9 @@ class Highscore extends Lightning.Component {
             marginTop: styles.spacing.medium,
           },
           title: "Home",
+          signals: {
+            _buttonPressed: "_buttonPressedHandler",
+          },
         },
 
         ClearHighscores: {
@@ -71,31 +77,43 @@ class Highscore extends Lightning.Component {
             marginTop: styles.spacing.medium,
           },
           title: "Clear Highscores",
+          signals: {
+            _buttonPressed: "_buttonPressedHandler",
+          },
         },
       },
     };
   }
 
-  index = 0;
+  _index = 0;
+
+  _buttonPressedHandler() {
+    if (this._index === 2){
+      this.clearScores();
+      return
+    }
+    const route = this._index === 0 ? "game" : "mainMenu";
+    Router.navigate(route);
+  }
 
   _handleDown() {
-    this.index++;
+    this._index++;
 
-    if (this.index >= this.tag("Buttons").children.length) {
-      this.index = this.tag("Buttons").children.length - 1;
+    if (this._index >= this.tag("Buttons").children.length) {
+      this._index = this.tag("Buttons").children.length - 1;
     }
   }
 
   _handleUp() {
-    this.index--;
+    this._index--;
 
-    if (this.index <= 0) {
-      this.index = 0;
+    if (this._index <= 0) {
+      this._index = 0;
     }
   }
 
   _getFocused() {
-    return this.tag("Buttons").children[this.index];
+    return this.tag("Buttons").children[this._index];
   }
 
   _active() {
@@ -105,10 +123,10 @@ class Highscore extends Lightning.Component {
   _renderHighscores() {
     const highscores = getHighscores();
 
-    this.tag("HighscoreItems").children = highscores.map((highscore, index) => {
+    this.tag("HighscoreItems").children = highscores.map((highscore, _index) => {
       return {
         text: {
-          text: `${index + 1}. ${highscore.date} - ${highscore.score}`,
+          text: `${_index + 1}. ${highscore.date} - ${highscore.score}`,
           ...fontStyles.menuItem,
           textColor: Colors("white").get(),
         },
