@@ -4,7 +4,7 @@ import { hexColors } from "../lib/colors";
 class Button extends LngButton {
   // Button sends a `buttonPressed` signal when it is pressed.
   onEnter() {
-    this.signal("buttonPressed");
+    this.signal("_buttonPressed");
   }
 }
 
