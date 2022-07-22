@@ -20,6 +20,7 @@
 import { Utils, Router } from "@lightningjs/sdk";
 import routes from "./routes";
 import colors from "./lib/colors";
+import NavBar from "./widgets/Navbar";
 
 export default class App extends Router.App {
   _setup() {
@@ -34,6 +35,11 @@ export default class App extends Router.App {
 
       color: 0xff333333,
       rect: true,
+      Widgets: {
+        NavBar: {
+          type: NavBar,
+        },
+      },
     };
   }
 
