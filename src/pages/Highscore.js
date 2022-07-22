@@ -33,6 +33,7 @@ class Highscore extends Lightning.Component {
           y: styles.spacing.large * 3 + styles.spacing.medium,
           x: 960,
           mountX: 0.5,
+          shader: null,
           flex: {
             direction: "column",
             alignItems: "center",
@@ -55,6 +56,7 @@ class Highscore extends Lightning.Component {
         PlayAgain: {
           type: Button,
           title: "Play Again",
+          shader: null,
           signals: {
             _buttonPressed: "_buttonPressedHandler",
           },
@@ -66,6 +68,7 @@ class Highscore extends Lightning.Component {
             marginTop: styles.spacing.medium,
           },
           title: "Home",
+          shader: null,
           signals: {
             _buttonPressed: "_buttonPressedHandler",
           },
@@ -77,6 +80,7 @@ class Highscore extends Lightning.Component {
             marginTop: styles.spacing.medium,
           },
           title: "Clear Highscores",
+          shader: null,
           signals: {
             _buttonPressed: "_buttonPressedHandler",
           },
@@ -88,9 +92,10 @@ class Highscore extends Lightning.Component {
   _index = 0;
 
   _buttonPressedHandler() {
-    if (this._index === 2){
+    if (this._index === 2) {
       this.clearScores();
-      return
+
+      return;
     }
     const route = this._index === 0 ? "game" : "mainMenu";
     Router.navigate(route);
@@ -107,8 +112,9 @@ class Highscore extends Lightning.Component {
   _handleUp() {
     this._index--;
 
-    if (this._index <= 0) {
+    if (this._index < 0) {
       this._index = 0;
+      Router.focusWidget("NavBar");
     }
   }
 
@@ -123,15 +129,17 @@ class Highscore extends Lightning.Component {
   _renderHighscores() {
     const highscores = getHighscores();
 
-    this.tag("HighscoreItems").children = highscores.map((highscore, _index) => {
-      return {
-        text: {
-          text: `${_index + 1}. ${highscore.date} - ${highscore.score}`,
-          ...fontStyles.menuItem,
-          textColor: Colors("white").get(),
-        },
-      };
-    });
+    this.tag("HighscoreItems").children = highscores.map(
+      (highscore, _index) => {
+        return {
+          text: {
+            text: `${_index + 1}. ${highscore.date} - ${highscore.score}`,
+            ...fontStyles.menuItem,
+            textColor: Colors("white").get(),
+          },
+        };
+      }
+    );
   }
 
   clearScores() {

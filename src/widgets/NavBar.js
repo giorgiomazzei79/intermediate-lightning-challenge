@@ -1,8 +1,6 @@
 import { Lightning, Router } from "@lightningjs/sdk";
 import styles from "../styles";
 
-//LITERALLY COPIED AND PASTED FROM THE LIGHTNING TRAINING SESSIONS.
-// DIDN'T HAVE TIME TO IMPLEMENT THAT, BUT BASICALLY IT WOULD HAVE DONE THE SAME
 export default class Navbar extends Lightning.Component {
   static selectedTextHighlightStyles = {
     highlight: true,
@@ -23,17 +21,6 @@ export default class Navbar extends Lightning.Component {
         paddingBottom: styles.spacing.small,
         paddingLeft: styles.spacing.large,
       },
-
-      HomeLink: {
-        text: {
-          textColor: 0xff333333,
-          text: "Home",
-          fontSize: styles.fontSizes.large.size,
-          lineHeight: styles.fontSizes.large.lineHeight,
-          ...Navbar.selectedTextHighlightStyles,
-          highlight: false,
-        },
-      },
       NegativeToggler: {
         flexItem: {
           marginLeft: styles.spacing.small,
@@ -53,15 +40,10 @@ export default class Navbar extends Lightning.Component {
   static height = 60;
   static totalHeight = Navbar.height + styles.spacing.small * 2;
 
-  focusedChild = "HomeLink";
+  focusedChild = "NegativeToggler";
 
   _handleChildFocus() {
     this.patch({
-      HomeLink: {
-        text: {
-          highlight: this.focusedChild === "HomeLink",
-        },
-      },
       NegativeToggler: {
         text: {
           highlight: this.focusedChild === "NegativeToggler",
@@ -76,11 +58,6 @@ export default class Navbar extends Lightning.Component {
 
   _unfocus() {
     this.patch({
-      HomeLink: {
-        text: {
-          highlight: false,
-        },
-      },
       NegativeToggler: {
         text: {
           highlight: false,
@@ -90,9 +67,6 @@ export default class Navbar extends Lightning.Component {
   }
 
   _handleEnter() {
-    if (this.focusedChild === "HomeLink") {
-      Router.navigate("home")
-    } else {
       const negativeToggler = this.tag("NegativeToggler");
 
       negativeToggler.patch({
@@ -101,24 +75,9 @@ export default class Navbar extends Lightning.Component {
         },
       });
       this.fireAncestors("$toggleDarkMode");
-    }
   }
 
-  _handleRight() {
-    if (this.focusedChild === "HomeLink") {
-      this.focusedChild = "NegativeToggler";
-    }
-    this._handleChildFocus();
-  }
-
-  _handleLeft() {
-    if (this.focusedChild === "NegativeToggler") {
-      this.focusedChild = "HomeLink";
-    }
-    this._handleChildFocus();
-  }
-
-  _handleDown(){
+  _handleDown() {
     Router.focusPage();
   }
 }

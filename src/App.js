@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-import { Utils, Router } from "@lightningjs/sdk";
+import { Utils, Router, Lightning } from "@lightningjs/sdk";
 import routes from "./routes";
 import colors from "./lib/colors";
 import NavBar from "./widgets/Navbar";
@@ -41,6 +41,32 @@ export default class App extends Router.App {
         },
       },
     };
+  }
+
+  _negative = false;
+
+  set negative(value) {
+    this._negative = value;
+
+    if (value) {
+      this.patch({
+        shader: {
+          type: Lightning.shaders.Inversion,
+        },
+      });
+    } else {
+      this.patch({
+        shader: null,
+      });
+    }
+  }
+
+  get negative() {
+    return this._negative;
+  }
+
+  $toggleDarkMode() {
+    this.negative = !this.negative;
   }
 
   static getFonts() {

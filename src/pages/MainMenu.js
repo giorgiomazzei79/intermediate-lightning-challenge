@@ -55,6 +55,7 @@ class MainMenu extends Lightning.Component {
         PlayItem: {
           type: Button,
           title: "Play",
+          shader: null,
           signals: {
             _buttonPressed: "_buttonPressedHandler",
           },
@@ -63,6 +64,7 @@ class MainMenu extends Lightning.Component {
         HighscoreItem: {
           type: Button,
           title: "Highscore",
+          shader: null,
           signals: {
             _buttonPressed: "_buttonPressedHandler",
           },
@@ -90,6 +92,10 @@ class MainMenu extends Lightning.Component {
   }
 
   _handleUp() {
+    if (this._index === 0) {
+      Router.focusWidget("NavBar");
+      return
+    }
     this._index = 0;
   }
 }

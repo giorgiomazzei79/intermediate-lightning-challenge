@@ -7,11 +7,13 @@ export default{
     routes: [
         {
             path: "mainMenu",
-            component: MainMenu
+            component: MainMenu,
+            widgets: ["Navbar"],
         },
         {
             path: "highScore",
-            component: Highscore
+            component: Highscore,
+            widgets: ["Navbar"],
         },
         {
             path: "game",
